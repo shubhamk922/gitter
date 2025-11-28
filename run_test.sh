@@ -8,7 +8,8 @@
 # 1. GLOBAL CONFIGURATION
 # ------------------------------------------------------------------------------
 RESULTS_FILE="gitter_test_results.txt"
-GITTER_COMMAND="gitter"
+GITTER_COMMAND="$(realpath ./gitter)"
+#GITTER_COMMAND="./gitter"
 TOTAL_TESTS=11  
 TEMP_DIR="test_workspace"
 
