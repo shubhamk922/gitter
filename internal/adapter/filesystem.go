@@ -1,8 +1,9 @@
-package fs
+package adapter
 
 import (
 	"io/fs"
 	"os"
+	"path/filepath"
 )
 
 type OSFileSystem struct{}
@@ -28,6 +29,14 @@ func (o *OSFileSystem) WriteFile(path string, data []byte) error {
 	return os.WriteFile(path, data, 0644)
 }
 
-func (o *OSFileSystem) Stat(path string) (fs.FileInfo, error) {
+func (f *OSFileSystem) Mkdir(path string) error {
+	return os.Mkdir(path, 0755)
+}
+
+func (f *OSFileSystem) Abs(path string) (string, error) {
+	return filepath.Abs(path)
+}
+
+func (f *OSFileSystem) Stat(path string) (fs.FileInfo, error) {
 	return os.Stat(path)
 }

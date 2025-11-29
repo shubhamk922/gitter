@@ -7,10 +7,10 @@ import (
 )
 
 type InitRepoService struct {
-	FS ports.RepoStore
+	FS ports.FileSystem
 }
 
-func NewInitRepositoryUseCase(fs ports.RepoStore) *InitRepoService {
+func NewInitRepositoryUseCase(fs ports.FileSystem) *InitRepoService {
 	return &InitRepoService{FS: fs}
 }
 
@@ -20,7 +20,7 @@ func (uc *InitRepoService) Execute(repoPath string) (string, error) {
 		return "Reinitialized existing Gitter repository", nil
 	}
 
-	if err := uc.FS.CreateDir(repoPath); err != nil {
+	if err := uc.FS.Mkdir(repoPath); err != nil {
 		return "", err
 	}
 
@@ -38,6 +38,6 @@ func (uc *InitRepoService) Execute(repoPath string) (string, error) {
 	uc.FS.WriteFile(filepath.Join(repoPath, "index.json"), index)
 
 	// STEP 4: Final message
-	abs, _ := uc.FS.GetAbs(repoPath)
+	abs, _ := uc.FS.Abs(repoPath)
 	return fmt.Sprintf("Initialized empty Gitter repository in %s", abs), nil
 }

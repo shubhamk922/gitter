@@ -1,4 +1,4 @@
-package commit
+package adapter
 
 import (
 	"encoding/json"

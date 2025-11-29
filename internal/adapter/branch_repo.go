@@ -1,4 +1,4 @@
-package fs
+package adapter
 
 import (
 	"gitter/internal/service/ports"

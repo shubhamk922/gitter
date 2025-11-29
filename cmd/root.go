@@ -3,10 +3,7 @@ package cmd
 import (
 	"fmt"
 	"gitter/internal/adapter"
-	"gitter/internal/adapter/commit"
-	"gitter/internal/adapter/fs"
-	"gitter/internal/adapter/index"
-	"gitter/internal/repo"
+	cli "gitter/internal/cli"
 	"gitter/internal/service"
 	"os"
 )
@@ -18,51 +15,44 @@ func Execute() {
 	}
 	repoBase := ".gitter"
 
-	branchStore := fs.NewFSBranchStore(repoBase)
-	idx := index.NewJSONIndexStore(".gitter/index.json")
-	cms := commit.NewJSONCommitStore(".gitter/log.json")
-	fsAdapter := fs.NewFSRepo()
-	fs := fs.NewOSFileSystem()
-	patterns, _ := adapter.LoadIgnoreFromFile() // you already have this
+	branchRepo := adapter.NewFSBranchStore(repoBase)
+	indexStore := adapter.NewJSONIndexStore(".gitter/index.json")
+	commitStore := adapter.NewJSONCommitStore(".gitter/log.json")
+	filesystem := adapter.NewOSFileSystem()
+	patterns, _ := adapter.LoadIgnoreFromFile(repoBase + "/gitterignore") // you already have this
 	ignore := adapter.NewIgnoreAdapter(patterns)
 
-	branchService := service.NewBranchService(branchStore)
-	initRepoService := service.NewInitRepositoryUseCase(fsAdapter)
-
-	uc := service.NewAddFilesUseCase(fs, ignore, idx)
-
-	commitsvc := service.NewCommitUseCase(idx, cms)
-
-	statussvc := service.NewStatusUseCase(fs, ignore, idx, cms)
-
-	logsvc := service.NewLogCommitsUseCase(cms)
-
-	resetsvc := service.NewResetHeadUseCase(cms, idx)
+	initRepo := service.NewInitRepositoryUseCase(filesystem)
+	addFiles := service.NewAddFilesUseCase(filesystem, ignore, indexStore)
+	commitChanges := service.NewCommitUseCase(indexStore, commitStore)
+	showStatus := service.NewStatusUseCase(filesystem, ignore, indexStore, commitStore)
+	showLog := service.NewLogCommitsUseCase(commitStore)
+	checkoutBranch := service.NewBranchService(branchRepo)
+	resetHead := service.NewResetHeadUseCase(commitStore, indexStore)
 
 	cmd := os.Args[1]
 
 	switch cmd {
 	case "help":
 		if len(os.Args) == 3 {
-			repo.HelpTopic(os.Args[2])
+			cli.HelpTopic(os.Args[2])
 		} else {
-			repo.Help()
+			cli.Help()
 		}
-		repo.Help()
 	case "init":
-		repo.Init(repoBase, initRepoService)
+		cli.Init(repoBase, initRepo)
 	case "add":
-		repo.Add(os.Args[2:], uc)
+		cli.Add(os.Args[2:], addFiles)
 	case "status":
-		repo.Status(statussvc)
+		cli.Status(showStatus)
 	case "commit":
-		repo.Commit(os.Args[2:], commitsvc)
+		cli.Commit(os.Args[2:], commitChanges)
 	case "log":
-		repo.Log(logsvc)
+		cli.Log(showLog)
 	case "reset":
-		repo.ResetHead(os.Args, resetsvc)
+		cli.ResetHead(os.Args, resetHead)
 	case "checkout":
-		repo.Checkout(os.Args[2:], branchService)
+		cli.Checkout(os.Args[2:], checkoutBranch)
 	default:
 		fmt.Println("Unknown command:", cmd)
 	}

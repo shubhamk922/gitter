@@ -27,8 +27,7 @@ func (i *IgnoreAdapter) ShouldIgnore(file string) bool {
 	return false
 }
 
-func LoadIgnoreFromFile() ([]string, error) {
-	path := ".gitter/gitterignore"
+func LoadIgnoreFromFile(path string) ([]string, error) {
 
 	data, err := os.Open(path)
 	if err != nil {
