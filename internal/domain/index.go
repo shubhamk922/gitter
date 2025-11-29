@@ -1,4 +1,4 @@
-package models
+package domain
 
 type Index struct {
 	Staged   []string `json:"staged"`

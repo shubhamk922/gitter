@@ -1,0 +1,91 @@
+--- Gitter Test Suite Execution Started ---
+Target Command: /home/shubham/Documents/GolangProjects/applications/be/gitter
+Total Tests Planned: 11
+
+======================================================
+--- Test 1: List All Common Commands ('gitter help') ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter help
+Check: Command line found (Expected: 'init Create an empty Gitter repository') -> PASS
+Check: Command line found (Expected: 'add Add file contents to the index') -> PASS
+Check: Command line found (Expected: 'status Show the working tree status') -> PASS
+
+Test Result Summary (Test 1): OVERALL PASS
+
+======================================================
+--- Test 2: Detailed Help Sections ('gitter help init') ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter help init
+Check: Section found (Expected: 'NAME:') -> PASS
+Check: Section found (Expected: 'SYNOPSIS:') -> PASS
+Check: Section found (Expected: 'DESCRIPTION:') -> PASS
+
+Test Result Summary (Test 2): OVERALL PASS
+
+======================================================
+--- Test 3: gitter init (First time initialization) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter init in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t3
+
+Test Result Summary (Test 3): OVERALL PASS
+
+======================================================
+--- Test 4: gitter add . (Stage new files) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter add . in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t4
+
+Test Result Summary (Test 4): OVERALL PASS
+
+======================================================
+--- Test 5: gitter add <regex> ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter add *.py in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t5
+
+Test Result Summary (Test 5): OVERALL PASS
+
+======================================================
+--- Test 6: gitter status (Untracked file) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter status in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t6
+
+Test Result Summary (Test 6): OVERALL PASS
+
+======================================================
+--- Test 7: gitter commit -m (Commit a staged file) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter commit -m "adds file2.md" in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t7
+
+Test Result Summary (Test 7): OVERALL PASS
+
+======================================================
+--- Test 8: gitter commit -am (Untracked files ignored) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter commit -am "adds some new files" in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t8
+
+Test Result Summary (Test 8): OVERALL PASS
+
+======================================================
+--- Test 9: gitter log (Commit history check) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter log (No commits) in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t9
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter log (Single commit) in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t9
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter log (Two commits) in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t9
+
+Test Result Summary (Test 9): OVERALL PASS
+
+======================================================
+--- Test 10: gitter reset HEAD~1 (Undo last commit) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter reset HEAD~1 in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t10
+
+Test Result Summary (Test 10): OVERALL PASS
+
+======================================================
+--- Test 11: gitter checkout -b (Create new branch) ---
+======================================================
+Executing: /home/shubham/Documents/GolangProjects/applications/be/gitter checkout -b test_branch in /home/shubham/Documents/GolangProjects/applications/be/test_workspace/t11
+
+Test Result Summary (Test 11): OVERALL PASS
+
+======================================================
+======================================================

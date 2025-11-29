@@ -1,12 +1,9 @@
 package repo
 
 import (
-	"crypto/sha1"
-	"encoding/hex"
 	"fmt"
-	"time"
 
-	"gitter/internal/models"
+	"gitter/internal/service"
 )
 
 func helpCommit() {
@@ -21,17 +18,9 @@ func helpCommit() {
 	fmt.Println("    A commit message is required and must be provided using the -m option.")
 }
 
-func Commit(args []string) {
+func Commit(args []string, svc *service.CommitUseCase) {
 	if !ensureRepo() {
 		fmt.Println("Not a gitter repo")
-		return
-	}
-
-	index := models.Index{}
-	readJSON(".gitter/index.json", &index)
-
-	if len(index.Staged) == 0 {
-		fmt.Println("nothing to commit")
 		return
 	}
 
@@ -43,28 +32,16 @@ func Commit(args []string) {
 		}
 	}
 
-	// generate commit hash
-	h := sha1.New()
-	h.Write([]byte(time.Now().String() + msg))
-	hash := hex.EncodeToString(h.Sum(nil))
-
-	commit := models.Commit{
-		Hash:    hash,
-		Message: msg,
-		Author:  "user",
-		Date:    time.Now().Format(time.RFC1123),
-		Files:   index.Staged,
+	_, err := svc.Commit(msg)
+	if err != nil {
+		if err == service.ErrNothingToCommit {
+			fmt.Println("nothing to commit")
+		} else {
+			fmt.Println("commit error:", err)
+		}
+		return
 	}
 
-	// append commit
-	var commits []models.Commit
-	readJSON(".gitter/log.json", &commits)
-	commits = append(commits, commit)
-	writeJSON(".gitter/log.json", commits)
-
-	// clear staging
-	index.Staged = []string{}
-	writeJSON(".gitter/index.json", index)
-
 	fmt.Println("Committed:", msg)
+
 }

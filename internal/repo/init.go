@@ -2,8 +2,7 @@ package repo
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
+	"gitter/internal/service"
 )
 
 func helpInit() {
@@ -18,31 +17,12 @@ func helpInit() {
 	fmt.Println("    This directory will contain internal files such as HEAD, refs, objects, and index.")
 }
 
-func Init() {
-	path := ".gitter"
-
-	// STEP 1: create .gitter directory first
-	err := os.Mkdir(path, 0755)
+func Init(repoPath string, initService *service.InitRepoService) {
+	message, err := initService.Execute(repoPath)
 	if err != nil {
-		if os.IsExist(err) {
-			fmt.Println("Reinitialized existing Gitter repository")
-		} else {
-			fmt.Println("Error:", err)
-		}
+		fmt.Println("Error:", err)
 		return
 	}
 
-	// STEP 2: now create gitterignore INSIDE .gitter
-	ignoreContent := "gitter_test_results.txt\n"
-	if err := os.WriteFile(filepath.Join(path, "gitterignore"), []byte(ignoreContent), 0644); err != nil {
-		fmt.Printf("failed to create gitterignore: %v\n", err)
-		return
-	}
-
-	// STEP 3: (Optional but recommended) create index.json
-	os.WriteFile(filepath.Join(path, "index.json"), []byte(`{"staged":[]}`), 0644)
-
-	// Final expected message
-	abs, _ := filepath.Abs(path)
-	fmt.Printf("Initialized empty Gitter repository in %s\n", abs)
+	fmt.Println(message)
 }

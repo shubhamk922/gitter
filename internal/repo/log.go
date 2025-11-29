@@ -3,7 +3,7 @@ package repo
 import (
 	"fmt"
 
-	"gitter/internal/models"
+	"gitter/internal/service"
 )
 
 func helpLog() {
@@ -18,17 +18,19 @@ func helpLog() {
 	fmt.Println("    Each commit entry shows the commit hash, author, date, and commit message.")
 }
 
-func Log() {
+func Log(svc *service.LogCommitsUseCase) {
 	if !ensureRepo() {
 		fmt.Println("Not a gitter repo")
 		return
 	}
 
-	var commits []models.Commit
-	readJSON(".gitter/log.json", &commits)
-
-	if len(commits) == 0 {
-		fmt.Println("your current branch does not have any commits yet")
+	commits, err := svc.GetLogs()
+	if err != nil {
+		if err == service.ErrNoCommits {
+			fmt.Println("your current branch does not have any commits yet")
+		} else {
+			fmt.Println("error:", err)
+		}
 		return
 	}
 

@@ -1,0 +1,11 @@
+{
+  "staged": [
+    "README_BE.md",
+    "gitter",
+    "gitter.go",
+    "gitter_test_results.txt",
+    "go.mod",
+    "run_test.sh"
+  ],
+  "modified": null
+}

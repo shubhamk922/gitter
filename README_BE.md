@@ -36,3 +36,6 @@ Create a CLI tool with behavior similar to Git, supporting commands like `init`,
    
 3. This will execute all test cases and generate a file named gitter_test_results.txt.  
 4. Refresh your File Explorer to view the newly created results file.
+
+** Test **
+go build -o gitter gitter.go
