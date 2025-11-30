@@ -39,3 +39,6 @@ Create a CLI tool with behavior similar to Git, supporting commands like `init`,
 
 ** Test **
 go build -o gitter gitter.go
+
+1 Extend Functionality
+git restore --staged <file>...
