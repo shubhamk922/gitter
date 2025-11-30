@@ -38,4 +38,13 @@ Create a CLI tool with behavior similar to Git, supporting commands like `init`,
 4. Refresh your File Explorer to view the newly created results file.
 
 ** Test **
+<<<<<<< Updated upstream
 go build -o gitter gitter.go
+=======
+go build -o gitter gitter.go
+
+1 Extend Functionality
+git restore --staged <file>...
+git stash
+git stash pop
+>>>>>>> Stashed changes

@@ -20,7 +20,7 @@ func NewResetHeadUseCase(logs ports.CommitStore, index ports.IndexStore) *ResetH
 
 func (uc *ResetHeadUseCase) Execute(args []string) (string, error) {
 	n := 1
-	if len(args) > 2 && args[2] == "HEAD~1" {
+	if len(args) > 2 {
 		arg := args[2] // e.g. "HEAD~3"
 
 		if strings.HasPrefix(arg, "HEAD~") {
