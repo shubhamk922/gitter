@@ -28,7 +28,7 @@ func (uc *CommitUseCase) Commit(message string) (string, error) {
 		return "", err
 	}
 
-	if len(idx.Staged) == 0 {
+	if len(idx.Staged) == 0 && len(idx.Deleted) == 0 {
 		return "", ErrNothingToCommit
 	}
 
@@ -43,6 +43,7 @@ func (uc *CommitUseCase) Commit(message string) (string, error) {
 		Author:  "user",
 		Date:    time.Now().Format(time.RFC1123),
 		Files:   idx.Staged,
+		Deleted: idx.Deleted,
 	}
 	commits, err := uc.CommitRepo.LoadLog()
 	if err != nil {
@@ -58,6 +59,7 @@ func (uc *CommitUseCase) Commit(message string) (string, error) {
 
 	// Clear staging
 	idx.Staged = []string{}
+	idx.Deleted = []string{}
 	err = uc.IndexRepo.Save(idx)
 	if err != nil {
 		return "", err

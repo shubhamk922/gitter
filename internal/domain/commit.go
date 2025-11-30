@@ -6,4 +6,5 @@ type Commit struct {
 	Author  string   `json:"author"`
 	Date    string   `json:"date"`
 	Files   []string `json:"files"`
+	Deleted []string `json:"deleted"`
 }
