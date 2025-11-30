@@ -24,6 +24,7 @@ func Execute() {
 
 	initRepo := service.NewInitRepositoryUseCase(filesystem)
 	addFiles := service.NewAddFilesUseCase(filesystem, ignore, indexStore)
+	removeFiles := service.NewRemoveFilesUseCase(filesystem, ignore, indexStore)
 	commitChanges := service.NewCommitUseCase(indexStore, commitStore)
 	showStatus := service.NewStatusUseCase(filesystem, ignore, indexStore, commitStore)
 	showLog := service.NewLogCommitsUseCase(commitStore)
@@ -53,6 +54,8 @@ func Execute() {
 		cli.ResetHead(os.Args, resetHead)
 	case "checkout":
 		cli.Checkout(os.Args[2:], checkoutBranch)
+	case "rm":
+		cli.Remove(os.Args[2:], removeFiles)
 	default:
 		fmt.Println("Unknown command:", cmd)
 	}

@@ -3,4 +3,5 @@ package domain
 type Index struct {
 	Staged   []string `json:"staged"`
 	Modified []string `json:"modified"`
+	Deleted  []string `json:"deleted"`
 }

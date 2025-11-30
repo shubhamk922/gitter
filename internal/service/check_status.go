@@ -26,10 +26,13 @@ func (uc *StatusUseCase) Execute() {
 	commits, _ := uc.cms.LoadLog()
 
 	// Staged
-	if len(index.Staged) > 0 {
+	if len(index.Staged) > 0 || len(index.Deleted) > 0 {
 		fmt.Println("Changes to be committed:")
 		for _, f := range index.Staged {
 			fmt.Println("  new file:", f)
+		}
+		for _, f := range index.Deleted {
+			fmt.Println("  remove file:", f)
 		}
 		return
 	}
@@ -74,8 +77,11 @@ func (uc *StatusUseCase) Execute() {
 		return
 	}
 
-	fmt.Println("Untracked files:")
-	for _, f := range untracked {
-		fmt.Println(" ", f)
+	if len(untracked) > 0 {
+		fmt.Println("Untracked files:")
+		for _, f := range untracked {
+			fmt.Println(" ", f)
+		}
 	}
+
 }
